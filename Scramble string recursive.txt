@@ -1,0 +1,35 @@
+#include<bits/stdc++.h>
+using namespace std;
+bool solve(string a, string b)
+{
+    if(a.compare(b)==0)
+        return true;
+    if(a.length()<=1)
+        return false;
+    int n=a.length();
+    bool f=false;
+    for(int i=1 ; i<=n-1 ; i++)
+    {
+        if(((solve(a.substr(0,i),b.substr(n-i,i))==true)&&(solve(a.substr(i,n-i),b.substr(0,n-i))==true)) || 
+        ((solve(a.substr(0,i),b.substr(0,i))==true)&&(solve(a.substr(i,n-i),b.substr(i,n-i))==true)))
+        {
+            f=true;
+            break;
+        }
+    }
+    return f;
+}
+int main()
+{
+    string a,b;
+    cout<<"Enter the 1st string :";
+    cin>>a;
+    cout<<"Enter the 2nd string :";
+    cin>>b;
+    if(a.length()!=b.length())
+        cout<<"false"<<endl;
+    if(a.empty() && b.empty())
+        cout<<"true"<<endl;
+    cout<<"Answer is: "<<solve(a,b)<<endl;
+    return 0;
+}

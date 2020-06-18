@@ -1,0 +1,60 @@
+#include<bits/stdc++.h>
+using namespace std;
+int EvaluateExpToTrue(string s, int i , int j , bool isTrue)
+{
+    if(i>j)
+        return 0;
+    if(i==j)
+    {
+        if(isTrue==true)
+            return s[i]=='T';
+        else
+            return s[i]=='F';
+    }
+        int ans=0;
+        for(int k=i+1 ; k<=j-1 ; k=k+2)
+        {
+            int lt,lf,rt,rf;
+            lt=EvaluateExpToTrue(s,i,k-1,true);
+            lf=EvaluateExpToTrue(s,i,k-1,false);
+            rt=EvaluateExpToTrue(s,k+1,j,true);
+            rf=EvaluateExpToTrue(s,k+1,j,false);
+            ans=ans+lt*rf+lf*rt;
+            if(s[k]=='&')
+            {
+                if(isTrue==true)
+                    ans=ans+lt*rt;
+                else
+                    ans=ans+lf*rt+lf*rf+lt*rf;
+            }
+            else if(s[k]=='|')
+            {
+                if(isTrue==true)
+                    ans=ans+lt*rt+lt*rf+lf*rt;
+                else
+                    ans=ans+lf*rf;
+            }
+            else if(s[k]=='^')
+            {
+                if(isTrue==true)
+                    ans=ans+lf*rt+lt*rf;
+                else
+                    ans=ans+lt*rt+lf*rf;
+            }
+            
+        }
+        return ans;
+    
+}
+int main()
+{
+    bool isTrue;
+    string s;
+    cout<<"Enter the string: "<<endl;
+    cin>>s;
+    
+    int n=s.length();
+    cout<<"No. of ways to evaluate: ";
+    cout<<EvaluateExpToTrue(s,0,n-1,isTrue);
+    return 0;
+}

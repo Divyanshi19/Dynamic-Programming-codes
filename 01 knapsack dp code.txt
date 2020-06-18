@@ -1,0 +1,42 @@
+#include<iostream>
+using namespace std;
+int max(int a, int b)
+{
+    if(a > b)
+        return a;
+    else
+        return b;
+}
+int knapsack(int *w, int *v, int n, int sack)
+{
+    int sol[n+1][sack+1];
+    for(int i=0 ; i<n+1 ; i++)
+    {
+        for(int j=0 ; j<sack+1 ; j++)
+        {
+            if(i == 0 || j == 0)
+                sol[i][j] = 0;
+            else if(w[i-1] > j)
+                sol[i][j]=sol[i-1][j];
+            else
+                sol[i][j]=max(sol[i-1][j],v[i-1]+sol[i-1][j-w[i-1]]);
+        }
+
+    }
+    return sol[n][sack];
+}
+int main()
+{
+    int n,knap;
+    cout<<"Enter the no. of operations"<<endl;
+    cin>>n;
+    int *weight = new int[n] , *value=new int[n];
+    cout<<"Enter the weight and value"<<endl;
+    for(int i=0 ; i<n ; i++)
+    {
+        cin>>weight[i] >> value[i];
+    }
+    cout<<"Enter the sackcapacity"<<endl;
+    cin>>knap;
+    cout<<"Value: "<<knapsack(weight,value,n,knap)<<endl;
+}

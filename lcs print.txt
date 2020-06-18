@@ -1,0 +1,72 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+int max(int a, int b)
+{
+    if(a > b)
+        return a;
+    else
+        return b;
+}
+int lcs(string s1, string s2 , int m , int n)
+{
+    int sol[m+1][n+1];
+    for(int i=0 ; i<m+1 ; i++)
+    {
+        for(int j=0; j < n+1; ++j)
+        {
+            if(i == 0 || j == 0)
+                sol[i][j] = 0;
+        }
+    }
+    for(int i=1 ; i<m+1 ; i++)
+    {
+        for(int j=1 ; j<n+1 ; j++)
+        {
+            if(s1[i-1]==s2[j-1])
+            {
+                sol[i][j]=1+sol[i-1][j-1];
+            }
+            else
+                sol[i][j]=max(sol[i-1][j],sol[i][j-1]);
+        }
+    }
+    vector <char> ch;
+    int i = m, j = n,sz;
+    string str = "";
+    while(i > 0 && j > 0)
+    {
+        if(s1[i-1] == s2[j-1])
+        {
+            ch.push_back(s1[i-1]);
+            i--;
+            j--;
+        }
+        else
+        {
+            if(sol[i][j-1] > sol[i-1][j])
+                j--;
+            else
+                i--;
+        }
+    }
+    sz = ch.size();
+    for(int i = sz-1; i >= 0; --i)
+        str = str + ch[i];
+    cout<<"Longest Common Subsequence is "<<str<<" ";
+    return sol[m][n];
+}
+int main()
+{
+    int m,n,l;
+    string s1,s2;
+    cout<<"Enter the first string :";
+    cin>>s1;
+    cout<<"Enter the second string :";
+    cin>>s2;
+    m=s1.length();
+    n=s2.length();
+    l=lcs(s1,s2,m,n);
+    cout<<"of length "<<l;
+    return 0;
+}
